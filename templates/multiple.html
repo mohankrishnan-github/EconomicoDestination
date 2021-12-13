@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <title>Best Flights</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+      <link rel="stylesheet" href="static/assets/css/main.css" />
+   </head>
+   <body class="is-preload">
+
+            <section>
+				<header id="header">
+                  <h1>Travel lot?</h1>
+                  <p>Subscribe for great flight deals<a href="http://html5up.net"></a>.</p>
+                </header>
+				<!-- Signup Form -->
+
+                <div class="container">
+                    {% for message in get_flashed_messages() %}
+                    <div class="alert alert-warning">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% block page_content %}{% endblock %}
+                </div>
+
+			<form id="signup-form" method="post" action="{{url_for('subscribe')}}">
+				{{form.email(type="email" , placeholder="Email Address" , autocomplete="off")}}
+                {{form.name(type="text" , placeholder="Name" , autocomplete="off")}}
+				{{form.location(type="text" ,id="autocomplete-airport-1" ,class="inp" ,placeholder="Flight From" , autocomplete="off")}}
+				{{form.destination(type="text",placeholder="Flight To" , autocomplete="off", multiple="on")}}
+
+				{{form.signup(type="submit")}}
+			</form>
+            </section>
+
+
+      <div class="made-with-love">
+         <!-- Footer -->
+         <footer id="footer">
+            <ul class="icons">
+               <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+               <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+               <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+               <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+            </ul>
+         </footer>
+         Made with
+         <i>♥</i> by
+         EconomicoDestination
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/airport-autocomplete-js@latest/dist/index.browser.min.js"></script>
+
+      <script src="static/assets/js/main.js"></script>
+
+   </body>
+</html>

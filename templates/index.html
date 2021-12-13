@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <title>Best Flights</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+      <link rel="stylesheet" href="static/assets/css/main.css" />
+   </head>
+   <body class="is-preload">
+
+            <section>
+				<header id="header">
+                  <h1>Travel lot?</h1>
+                  <p>Search for great flight deals<a href="http://html5up.net"></a>.</p>
+                </header>
+				<form action="{{url_for('search')}}" id="signup-form" method="post" >
+
+                  {{form.location(type="text", id="autocomplete-airport-1" ,class="inp" ,placeholder="Flight From" , autocomplete="off")}}
+
+                  {{form.destination(type="text", id="autocomplete-airport-2" ,class="inp" ,placeholder="Flight To" , autocomplete="off")}}
+                  {{form.type(type="text", placeholder="Flight Type", autocomplete="off")}}
+                  {{form.adults(type="number", placeholder="Adults",min="1", max="5", autocomplete="off")}}
+                  {{form.children(type="number", placeholder="Children",min="0", max="5",  autocomplete="off")}}
+                  {{form.search(type="submit")}}
+               </form>
+
+
+
+               {%if deals != []%}
+                  <h1 style="text-align:center">{{deals[0]["fly_from"].upper()}}
+                     {%if deals[0]["flight_type"] == "oneway"%}
+                        <i class="fas fa-arrow-right"></i>
+                     {%else%}
+                        <i class="fas fa-exchange-alt"></i>
+                     {%endif%}
+                     {{deals[0]["fly_to"].upper()}}</h1>
+               {%endif%}
+               {%if deals == []%}
+                     <h1 style="text-align:center; padding-top:10%"><i class="fa fa-fighter-jet" aria-hidden="true"></i>Please Make Fight Search</h1>
+               {%else%}
+               <div class="tbl-header">
+
+                  <table cellpadding="0" cellspacing="0" border="0">
+                     <thead>
+                        <tr>
+                           <th>Airline</th>
+                           <th>Departure</th>
+                           <th>Arrival</th>
+                           <th>Price</th>
+                           <th>Date</th>
+                        </tr>
+                     </thead>
+                  </table>
+               </div>
+               <div class="tbl-content">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                     <tbody>
+
+                     {%for deal in deals[1:]%}
+                        <tr>
+                           <td>{{deal["airlines"]}}</td>
+                           <td>{{deal["departure"]}} </td>
+                           <td>{{deal["arrival"]}}</td>
+                           <td>₹{{deal["price"]}}</td>
+                           <td><a href="{{deal['link']}}">BOOK NOW</a></td>
+                        </tr>
+                     {%endfor%}
+
+                     </tbody>
+                  </table>
+               </div>
+               {%endif%}
+            </section>
+
+
+      <div class="made-with-love">
+         <!-- Footer -->
+         <footer id="footer">
+            <ul class="icons">
+               <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+               <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+               <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+               <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+            </ul>
+         </footer>
+         Made with
+         <i>♥</i> by
+         EconomicoDestination
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/airport-autocomplete-js@latest/dist/index.browser.min.js"></script>
+
+      <script src="static/assets/js/main.js"></script>
+
+   </body>
+</html>

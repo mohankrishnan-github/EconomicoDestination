@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <title>Airline Analysis</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+      <link rel="stylesheet" href="static/assets/css/main.css" />
+   </head>
+   <body class="is-preload">
+
+            <section>
+
+                    <!-- Signup Form -->
+
+
+
+                    <div class="container">
+                        {% for message in get_flashed_messages() %}
+                        <div class="alert alert-warning">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                        {% block page_content %}{% endblock %}
+                    </div>
+
+                <div class="airline-form">
+
+                <table>
+                    <tr><td></td><td>
+                     <header id="header">
+
+                      <p>AirLine Sentiment Analaysis</p>
+                    </header>
+                    <form id="signup-form" method="post" action="{{url_for('airline_analysis')}}">
+                        {{form.name(type="text" , placeholder="Enter Airline" , autocomplete="off")}}
+                        {{form.submit(type="submit")}}
+                    </form>
+                    </td>
+                    <td></td></tr>
+                </table>
+                </div>
+                <br>
+                <div class="content">
+                {%if flag%}
+                    <table>
+                    <tr>
+                        <td><img src="/static/images/positive.png"></td>
+                        <td><img src="/static/images/negative.png"></td>
+                     </tr>
+                     <tr>
+                        <td><img src="/static/images/positive-trigram.png"></td>
+                        <td><img src="/static/images/negative-trigram.png"></td>
+                     </tr>
+                     <tr>
+                        <td><img src="/static/images/pca_plot.png"></td>
+                     </tr>
+                    </table>
+                 {% endif %}
+                </div>
+
+            </section>
+
+
+
+
+
+      <script src="https://cdn.jsdelivr.net/npm/airport-autocomplete-js@latest/dist/index.browser.min.js"></script>
+
+      <script src="static/assets/js/main.js"></script>
+
+   </body>
+</html>
