@@ -13,15 +13,11 @@ import processReviews
 import string
 
 
-
 def word_data(dfs, stop_words):
     """
-    INPUT:
-    dfs: list of dataframes of reviews for each airline
+    Input: dfs: list of dataframes of reviews for each airline
     stop_words: words deemed unimportant for NLP analysis
-
-    Creates 'nlp_words' column for every dataframe with important NLP words
-        for each review
+    Creates 'nlp_words' column for every dataframe with important NLP words for each review
     """
     for df in dfs:
         lst_of_str_reviews = []
@@ -37,12 +33,8 @@ def word_data(dfs, stop_words):
 
 def opt_alpha(nb, df, tfidf, y):
     """
-    INPUT:
-    nb: Naive Bayes classifier
-    df: dataframe in order to train nb on
-
-    OUTPUT:
-    alpha: optimal alpha based on optimizing accuracy for data given
+    Input: nb: Naive Bayes classifier df: dataframe in order to train nb on
+    Output: alpha: optimal alpha based on optimizing accuracy for data given
     """
     params = {'alpha': [0.1, 0.2, 0.3, 0.4, 0.5]}
     gc = GridSearchCV(nb, param_grid=params, cv=10, scoring='accuracy')
@@ -52,12 +44,9 @@ def opt_alpha(nb, df, tfidf, y):
 
 def bag_of_words(df, stop_words):
     """
-    INPUT:
-    df: dataframe specifying airline reviews
+    Input: df: dataframe specifying airline reviews
     stop_words: list of words deemed unimportant for NLP analysis
-
-    OUTPUT:
-    bag_of_words: string of words deemed important for NLP analysis
+    Output: bag_of_words: string of words deemed important for NLP analysis
     """
     bag_of_words = []
     for x in df['words']:
@@ -72,14 +61,9 @@ def bag_of_words(df, stop_words):
 
 def pca_plot(dfs, stop_words):
     """
-    INPUT:
-    dfs: dataframes of all airlines with respective reviews
+    Input: dfs: dataframes of all airlines with respective reviews
     stop_words: list of words deemed unimportant for NLP analysis
-
-    OUTPUT:
-    PCA plot: plotting review information and respective label
-        (positive or negative)
-    with condensed features (3)
+    Output: PCA plot: plotting review information and respective label (positive or negative) with condensed features (3)
     """
     review_texts = []
     labels = []
@@ -88,7 +72,6 @@ def pca_plot(dfs, stop_words):
             labels.append(label)
         for review in bag_of_words(df, stop_words):
             review_texts.append(review)
-
     tfidf = TfidfVectorizer(stop_words=stop_words)
     scaler = StandardScaler()
 
@@ -109,15 +92,10 @@ def pca_plot(dfs, stop_words):
 
 def model_score(dfs, stop_words, weight_dict):
     """
-    INPUT:
-    dfs: dataframes of all airlines with respective reviews
+    Input: dfs: dataframes of all airlines with respective reviews
     stop_words: list of words deemed unimportant for NLP analysis
-    weight_dict: dictionary with weights for positive and negative
-        classification
-
-    OUTPUT:
-    confusion_matrix and accuracy score for each airline's predictive
-        Naive Bayes model
+    weight_dict: dictionary with weights for positive and negative classification
+    Output: confusion_matrix and accuracy score for each airline's predictive Naive Bayes model
     """
     for i, df in enumerate(dfs):
         tfidf = TfidfVectorizer(stop_words=stop_words)
@@ -147,7 +125,6 @@ def predict(data):
     dfs = data
     stop_words = sentiment_analysis.create_stop_words()
     word_data(dfs, stop_words)
-
     # class weights based on picking up more negative reviews while
     # maintaining legitimate accuracy (at least 80%)
     weight_dict = {0: [.55, .45], 1: [.65, .35], 2: [.6, .4], 3: [.5, .5],

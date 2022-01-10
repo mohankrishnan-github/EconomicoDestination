@@ -10,14 +10,8 @@ import sentiment_analysis
 
 
 def webscrape(airline):
-    """
-    INPUT:
-    airline: text used to go to reviews website for particular airline
-
-    OUTPUT:
-    reviews: list of HTML segments that contains all relevant review
-        information
-    """
+    """ Input: airline: text used to go to reviews website for particular airline
+    Output: reviews: list of HTML segments that contains all relevant review information """
     reviews = []
     browser = webd.Chrome(executable_path="C:/chromeDriver/chromedriver.exe")
 
@@ -37,11 +31,8 @@ def webscrape(airline):
 
 def parse_review(review: bs4.element.Tag) -> dict:
     """
-    INPUT:
-    review: HTML segment that contains all relevant review information
-
-    OUTPUT:
-    d: dictionary of relevant review information
+    Input: review: HTML segment that contains all relevant review information
+    Output: d: dictionary of relevant review information
     """
 
     d = {}
@@ -71,12 +62,8 @@ def parse_review(review: bs4.element.Tag) -> dict:
 
 def webscrape_manager(airline_list):
     """
-    INPUT:
-    airline_list: list of airline names as strings
-
-    OUTPUT:
-    webscrape_info_dict: dictionary with keys as airline names and values as
-        webscraped html code
+    Input: airline_list: list of airline names as strings
+    Output: webscrape_info_dict: dictionary with keys as airline names and values as webscraped html code
     """
     webscrape_info_dict = {}
 
@@ -88,14 +75,9 @@ def webscrape_manager(airline_list):
 
 def review_parser(airline_list, webscrape_info_dict):
     """
-    INPUT:
-    airline_list: list of airline names as strings
-    webscrape_info_dict: dictionary with keys as airline names and values as
-        webscraped html code
-
-    OUTPUT:
-    airline_dict: dictionary with keys as airline names and values as their
-        respective reviews
+    Input: airline_list: list of airline names as strings
+    webscrape_info_dict: dictionary with keys as airline names and values as webscraped html code
+    Output: airline_dict: dictionary with keys as airline names and values as their respective reviews
     """
     airline_dict = defaultdict(list)
     i = 0
@@ -109,27 +91,16 @@ def review_parser(airline_list, webscrape_info_dict):
 
 def copy_to_sql(airline_list, airline_dict, engine):
     """
-    INPUT:
-    airline_list: list of airline names as strings
-    airline_dict: dictionary with keys as airline names and values as their
-        respective reviews
+    Input: airline_list: list of airline names as strings
+    airline_dict: dictionary with keys as airline names and values as their respective reviews
     engine: directory to SQL database to store webscraped review data
-
-    OUTPUT:
-    None
     """
     for airline in airline_list:
-        pd.DataFrame(airline_dict[airline]).to_sql(airline.split('-')[0],
-                                                   con=engine)
+        pd.DataFrame(airline_dict[airline]).to_sql(airline.split('-')[0], con=engine)
 
 
 def getReviews(airline, engine):
-    airline_list = [
-        airline
-    ]
+    airline_list = [airline]
     webscrape_info_dict = webscrape_manager(airline_list)
     airline_dict = review_parser(airline_list, webscrape_info_dict)
     copy_to_sql(airline_list, airline_dict, engine)
-
-
-

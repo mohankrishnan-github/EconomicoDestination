@@ -24,7 +24,7 @@ db = SQLAlchemy(app)
 
 
 class User(db.Model):
-    email = db.Column(db.String(20), primary_key=True)
+    email = db.Column(db.String(50), primary_key=True)
     name = db.Column(db.String(20))
     location = db.Column(db.String(50))
     destinations = db.Column(db.String(200))
@@ -87,7 +87,8 @@ def subscribe():
             new_user = User(email = Email,name = Name,location = Location,destinations = Destinations, next_mail_on = Today )
             db.session.add(new_user)
             db.session.commit()
-        flash('Email already exist')
+        else:
+            flash('Email already exist')
 
         return redirect(url_for('subscribe'))
     return render_template('multiple.html', form=form)

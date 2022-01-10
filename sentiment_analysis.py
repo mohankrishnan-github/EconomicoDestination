@@ -11,11 +11,9 @@ import string
 import nltk
 
 
-
 def create_stop_words():
     '''
-    OUTPUT:
-    stop_words: new stop words list with user added words
+    Output: stop_words: new stop words list with user added words
     '''
     nltk.download('stopwords')
     stop_words = stopwords.words('english')
@@ -42,14 +40,10 @@ def create_stop_words():
 
 def bag_of_words(df, positive, stop_words):
     '''
-    INPUT:
-    df: dataframe specifying airline reviews
-    positive: 1 if you want positive reviews for airline or 0 if you want
-        negative reviews
+    Input: df: dataframe specifying airline reviews
+    positive: 1 if you want positive reviews for airline or 0 if you wantnegative reviews
     stop_words: list of words deemed unimportant for NLP analysis
-
-    OUTPUT:
-    bag_of_words: string of words deemed important for NLP analysis
+    Output: bag_of_words: string of words deemed important for NLP analysis
     '''
     class_words = []
     for x in df[df['positive'] == positive]['words']:
@@ -62,12 +56,8 @@ def bag_of_words(df, positive, stop_words):
 
 def common_trigrams(bag_of_words):
     '''
-    INPUT:
-    bag_of_words: string of words used for NLP analysis
-
-    OUTPUT:
-    Returns 5 most common trigrams in positive or negative reviews for
-        particular airline
+    Input: bag_of_words: string of words used for NLP analysis
+    Output: Returns 5 most common trigrams in positive or negative reviews for particular airline
     '''
     tokens = bag_of_words.split(' ')
     trigrams = [(tokens[i], tokens[i+1], tokens[i+2]) for i in
@@ -85,19 +75,13 @@ def common_trigrams(bag_of_words):
 
 def create_word_cloud(bag_of_words, stop_words, title, fig):
     '''
-    INPUT:
-    bag_of_words: string of words used for NLP analysis
-
-    OUTPUT:
-    Word cloud based on words in bag_of_words in the shape of a plane! (shape of the plane-icon.png silhouette)
+    Input: bag_of_words: string of words used for NLP analysis
+    Output: Word cloud based on words in bag_of_words in the shape of a plane! (shape of the plane-icon.png silhouette)
     '''
     d = path.dirname(__file__)
     plane_mask = np.array(Image.open(path.join(d, "plane-icon.png")))
     plt.figure(figsize=(5, 5))
-    wordcloud = WordCloud(colormap='magma',
-                          background_color=None,
-                          stopwords=stop_words).generate(bag_of_words)
-
+    wordcloud = WordCloud(colormap='magma', background_color=None, stopwords=stop_words).generate(bag_of_words)
     plt.title(title, fontdict={'fontsize': 15})
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis("off")
@@ -107,20 +91,14 @@ def create_word_cloud(bag_of_words, stop_words, title, fig):
 
 def word_analysis(airline, dfs, stop_words, positive=1):
     '''
-    INPUT:
-    dfs: list of dataframes of reviews for each airline
+    Input: dfs: list of dataframes of reviews for each airline
     stop_words: words deemed unimportant for NLP analysis
-    positive: 1 to get reviews with overall rating of 6 or more or 0 for
-        reviews with overall rating of 5 or less
-
-    OUTPUT:
-    wordcloud of words that are most used in reviews that are either positive
-        or negative
+    positive: 1 to get reviews with overall rating of 6 or more or 0 for reviews with overall rating of 5 or less
+    Output: wordcloud of words that are most used in reviews that are either positive or negative
     '''
     airlines = airline
     i = 0
     sentiment = ''
-
     sentiment = 'Positive'
     for df in dfs:
         sentiment_words = bag_of_words(df, 1, stop_words)
@@ -148,15 +126,10 @@ def word_analysis(airline, dfs, stop_words, positive=1):
 
 def trigram_analysis(airline, dfs, stop_words, positive, title):
     '''
-    INPUT:
-    dfs: list of dataframes of reviews for each airline
+    Input: dfs: list of dataframes of reviews for each airline
     stop_words: words deemed unimportant for NLP analysis
-    positive: 1 to get reviews with overall rating of 6 or more or 0 for
-        reviews with overall rating of 5 or less
-
-    OUTPUT:
-    pie graph of top 5 most used trigrams in reviews that are either positive
-        or negative
+    positive: 1 to get reviews with overall rating of 6 or more or 0 for reviews with overall rating of 5 or less
+    Output: pie graph of top 5 most used trigrams in reviews that are either positive or negative
     '''
     airlines = airline
     i = 0
@@ -168,7 +141,6 @@ def trigram_analysis(airline, dfs, stop_words, positive, title):
 
     for df in dfs:
         sentiment_words = bag_of_words(df, positive, stop_words)
-
         trigrams = common_trigrams(sentiment_words)
         labels = []
         values = []
@@ -176,13 +148,10 @@ def trigram_analysis(airline, dfs, stop_words, positive, title):
             labels.append(' '.join(k).title())
             values.append(v)
         if positive:
-            colors = ['yellowgreen', 'gold', 'lightskyblue',
-                      'lightcoral', 'firebrick']
+            colors = ['yellowgreen', 'gold', 'lightskyblue' ,'lightcoral', 'firebrick']
         else:
-            colors = ['firebrick', 'lightcoral', 'lightskyblue',
-                      'gold', 'yellowgreen']
+            colors = ['firebrick', 'lightcoral', 'lightskyblue', 'gold', 'yellowgreen']
         explode = (0.1, 0, 0, 0, 0)
-
         plt.pie(values, explode=explode, labels=labels, colors=colors,
                 autopct=make_autopct(values), shadow=True, startangle=90)
         # Set aspect ratio to be equal so that pie is drawn as a circle.
@@ -195,38 +164,14 @@ def trigram_analysis(airline, dfs, stop_words, positive, title):
 
 def make_autopct(values):
     '''
-    INPUT:
-    values: number of times event (trigrams) occurs in text
-
-    OUTPUT:
-    values to be used in pie graph
+    Input: values: number of times event (trigrams) occurs in text
+    Output: values to be used in pie graph
     '''
     def my_autopct(pct):
         total = sum(values)
         val = int(round(pct*total/100.0))
         return '{v:d}'.format(v=val)
     return my_autopct
-
-
-def twitter_sentiment(consumer_key, consumer_secret, token, token_secret):
-    '''
-    INPUT:
-    consumer_key,consumer_secret,token,token_secret: consumer and token keys
-        created on Twitter Apps
-
-    OUTPUT:
-    Tweets that contain api search term or terms
-    '''
-    authorization = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    authorization.set_access_token(token, token_secret)
-
-    api = tweepy.API(authorization)
-    tweets = api.search('Nippon AND Airways')
-
-    for tweet in tweets:
-        print(tweet.text)
-        text_analysis = tb(tweet.text)
-        print('\n' + '\033[1m' + f'Sentiment score: {text_analysis.sentiment.polarity}\n\n' + '\033[0m')
 
 
 def sentimentAnalysis(airline, data):
