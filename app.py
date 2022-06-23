@@ -18,7 +18,7 @@ from sqlalchemy import create_engine
 
 app = Flask(__name__)
 app.secret_key="secretkey123"
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://ED@economicodestination:M0han123456@economicodestination.mysql.database.azure.com:3306/ed"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://userGKU:xOJ2bQxIU2r8SFV2@172.30.93.37:3306/ed"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
